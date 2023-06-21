@@ -1,18 +1,18 @@
-const {src, dest, parallel} = require("gulp")
-const copyScss = () => {
-    return src("dist/scss/*.scss").pipe(dest("build/styles"))
+const {src, dest, parallel, watch} = require("gulp");
+
+const changeHTMLFile = (done) => {
+    console.log("html is changed")
+    done()
+}
+const changeJsFile = (done) => {
+    console.log("js is changed")
+    done()
+}
+const watchers = () => {
+    watch("dist/pages/*.html", {events: ["change"]}, changeHTMLFile)
+
+    watch("dist/js/script.js", {events: ["change", "add"]}, changeJsFile)
 }
 
-const copyHtml = () => {
-    return src("dist/pages/*.html").pipe(dest("build/pages"))
-}
 
-const copyJs = () => {
-    return src("dist/js/*.js").pipe(dest("build/js"))
-}
-
-exports.copy = copyScss
-exports.copy = copyJs
-exports.copy = copyHtml
-
-exports.default = parallel(copyScss, copyJs, copyHtml)
+exports.watchers = watchers;
