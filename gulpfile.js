@@ -1,18 +1,22 @@
-const {src, dest, parallel, watch} = require("gulp");
+'use strict';
+const sass = require('gulp-sass');
+const pug = require('gulp-pug');
+let gulp = require('gulp');
 
-const changeHTMLFile = (done) => {
-    console.log("html is changed")
-    done()
-}
-const changeJsFile = (done) => {
-    console.log("js is changed")
-    done()
-}
-const watchers = () => {
-    watch("dist/pages/*.html", {events: ["change"]}, changeHTMLFile)
-
-    watch("dist/js/script.js", {events: ["change", "add"]}, changeJsFile)
+function compileSAAS() {
+    return gulp.src(`./dist/scss/**/*.scss`)
+        .pipe(sass())
+        .pipe(gulp.dest('build/css'))
 }
 
+function compilePUG() {
+    return gulp.src('.dist/pug/**/*.pug')
+        .pipe(pug())
+        .pipe(gulp.dest('build/pug'))
+}
 
-exports.watchers = watchers;
+exports.buildStyles = compileSAAS;
+exports.buildStyles = compilePUG;
+exports.default = async function () {
+    gulp.watch(`./dist/scss/**/*.scss`, gulp.parallel(compilePUG, compileSAAS));
+};
