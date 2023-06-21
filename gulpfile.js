@@ -1,6 +1,10 @@
-const {src, dest} = require("gulp")
+const {src, dest, parallel} = require("gulp")
 const copyScss = () => {
     return src("dist/scss/*.scss").pipe(dest("build/styles"))
+}
+
+const copyHtml = () => {
+    return src("dist/pages/*.html").pipe(dest("build/pages"))
 }
 
 const copyJs = () => {
@@ -9,3 +13,6 @@ const copyJs = () => {
 
 exports.copy = copyScss
 exports.copy = copyJs
+exports.copy = copyHtml
+
+exports.default = parallel(copyScss, copyJs, copyHtml)
